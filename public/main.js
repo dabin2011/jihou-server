@@ -112,7 +112,7 @@ function triggerJihou(video, audio) {
 
 // ニュース・天気・地震情報の取得（毎分更新）
 function fetchAllInfo() {
-  const newsAPI = "YOUR_NEWSAPI_KEY";
+  const newsAPI = "8235d3f5146640bc89ea8974ef39a37e";
   const weatherAPI = "YOUR_OPENWEATHER_KEY";
   const city = "Machida,jp";
 
@@ -144,4 +144,5 @@ function fetchAllInfo() {
 }
 
 setInterval(fetchAllInfo, 60000);
+
 

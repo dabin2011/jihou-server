@@ -48,7 +48,6 @@ body {
   border-radius: 50%;
 }
 
-/* ニュースバー */
 #news-bar {
   position: absolute;
   bottom: 0;
@@ -80,7 +79,6 @@ body {
   }
 }
 
-/* 宣伝枠 */
 #promo-area {
   margin: 20px;
   text-align: center;

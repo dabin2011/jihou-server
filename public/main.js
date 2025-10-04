@@ -1,9 +1,8 @@
 const enableBtn = document.getElementById('enable-audio');
 const disableBtn = document.getElementById('disable-audio');
-const newsBar = document.getElementById('news-bar');
 const newsText = document.getElementById('news-text');
+const promoForm = document.getElementById('promo-form');
 const promoInput = document.getElementById('promo-input');
-const promoDisplay = document.getElementById('promo-display');
 
 const videos = {
   "0:0": document.getElementById('jihou-video-0'),
@@ -18,30 +17,21 @@ const audios = {
 let alreadyPlayed = false;
 
 window.addEventListener('DOMContentLoaded', () => {
-  const savedPromo = localStorage.getItem('promo-text');
-  if (savedPromo) {
-    promoInput.value = savedPromo;
-    promoDisplay.textContent = `📢 ${savedPromo}`;
+  fetchPromoMessages();
+});
+
+promoForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const text = promoInput.value.trim();
+  if (text) {
+    fetch('http://localhost:3000/promo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    }).then(() => {
+      promoInput.value = '';
+    });
   }
-  fetchNewsOnly();
-});
-
-promoInput.addEventListener('input', () => {
-  const text = promoInput.value;
-  promoDisplay.textContent = `📢 ${text}`;
-  localStorage.setItem('promo-text', text);
-});
-
-enableBtn.addEventListener('click', () => {
-  enableBtn.style.display = 'none';
-  disableBtn.style.display = 'inline-block';
-  localStorage.setItem('jihou-status', 'enabled');
-});
-
-disableBtn.addEventListener('click', () => {
-  disableBtn.style.display = 'none';
-  enableBtn.style.display = 'inline-block';
-  localStorage.setItem('jihou-status', 'disabled');
 });
 
 setInterval(() => {
@@ -53,7 +43,7 @@ setInterval(() => {
   const isEnabled = localStorage.getItem('jihou-status') === 'enabled';
   const isJihouTime = isEnabled && key in videos;
 
-  newsBar.style.display = isJihouTime ? 'none' : 'block';
+  document.getElementById('news-bar').style.display = isJihouTime ? 'none' : 'block';
 
   if (isJihouTime && !alreadyPlayed) {
     alreadyPlayed = true;
@@ -87,21 +77,18 @@ function triggerJihou(video, audio) {
   };
 }
 
-// ✅ ニュースのみ取得
-function fetchNewsOnly() {
-  const newsAPI = "YOUR_NEWSAPI_KEY";
-  fetch(`https://newsapi.org/v2/top-headlines?country=jp&language=ja&pageSize=5&apiKey=${newsAPI}`)
+function fetchPromoMessages() {
+  fetch('http://localhost:3000/promo')
     .then(res => res.json())
     .then(data => {
-      const headlines = data.articles.map(a => `📰 ${a.title}`).join('　');
-      const promo = promoInput.value.trim();
-      const promoText = promo ? `📢 ${promo}` : "";
-      newsText.textContent = `${promoText}　${headlines}`;
-    })
-    .catch(err => {
-      console.error("ニュース取得失敗:", err);
-      newsText.textContent = "📰 ニュース取得に失敗しました";
+      const messages = data.messages;
+      if (messages.length > 0) {
+        const random = messages[Math.floor(Math.random() * messages.length)];
+        newsText.textContent = `📢 ${random}`;
+      } else {
+        newsText.textContent = '';
+      }
     });
 }
 
-setInterval(fetchNewsOnly, 60000);
+setInterval(fetchPromoMessages, 10000); // 10秒ごとにランダム更新

@@ -1,42 +1,30 @@
+<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>シゲシゲ時報</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding-top: 100px;
-      background-color: #111;
-      color: #fff;
-    }
-    h1 {
-      font-size: 2em;
-    }
-    video {
-      margin-top: 30px;
-      width: 80%;
-      max-width: 600px;
-      display: none;
-    }
-    #status {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: lime;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>シゲシゲ時報</h1>
-  <p>23:59:39 にシゲシゲ動画が再生されます</p>
-  <div id="status">待機中...</div>
+  <div id="jihou-banner">
+    <video id="jihou-video">
+      <source src="videos/jihou.mp4" type="video/mp4">
+    </video>
 
-  <video id="shigeVideo" src="videos/shige.mp4" preload="auto"></video>
+    <div id="jihou-controls">
+      <button id="enable-audio" class="icon-button">
+        <img src="icons/sound-on.png" alt="時報を有効にする" />
+      </button>
+      <button id="disable-audio" class="icon-button" style="display:none;">
+        <img src="icons/sound-off.png" alt="時報を無効にする" />
+      </button>
+    </div>
+  </div>
 
-  <script>
-    const status = document.getElementById('status');
-    const video = document.getElementById('shigeVideo');
+  <script src="main.js"></script>
+</body>
+</html> = document.getElementById('shigeVideo');
 
     const target = new Date();
     target.setHours(23);
@@ -61,3 +49,4 @@
   </script>
 </body>
 </html>
+

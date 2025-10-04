@@ -2,7 +2,6 @@ const video = document.getElementById('jihou-video');
 const audio = document.getElementById('jihou-audio');
 const enableBtn = document.getElementById('enable-audio');
 const disableBtn = document.getElementById('disable-audio');
-const newsBar = document.getElementById('news-bar');
 
 let alreadyPlayed = false;
 
@@ -43,27 +42,24 @@ disableBtn.addEventListener('click', () => {
 
 // 時報のターゲット時刻（時と分のみ）
 const targetHour = 2;
-const targetMinute = 55;
+const targetMinute = 45;
 
 setInterval(() => {
   const now = new Date();
   const currentHour = now.getHours();
   const currentMinute = now.getMinutes();
 
-  const isJihouTime =
+  if (
     localStorage.getItem('jihou-status') === 'enabled' &&
     currentHour === targetHour &&
-    currentMinute === targetMinute;
-
-  // ニュースバーの表示制御
-  newsBar.style.display = isJihouTime ? 'none' : 'block';
-
-  // 時報発火（1分に1回）
-  if (isJihouTime && !alreadyPlayed) {
+    currentMinute === targetMinute &&
+    !alreadyPlayed
+  ) {
     alreadyPlayed = true;
     triggerJihou();
   }
 
+  // 分が変わったらリセット
   if (currentMinute !== targetMinute) {
     alreadyPlayed = false;
   }
@@ -95,3 +91,4 @@ function triggerJihou() {
     }
   };
 }
+

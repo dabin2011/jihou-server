@@ -18,8 +18,8 @@ disableBtn.addEventListener('click', () => {
 });
 
 // 時報のターゲット時刻（23:59:39）
-const targetHour = 23;
-const targetMinute = 59;
+const targetHour = 0;
+const targetMinute = 26;
 const targetSecond = 39;
 
 // 毎秒チェックして時報を鳴らす
@@ -35,3 +35,4 @@ setInterval(() => {
     video.play();
   }
 }, 1000);
+

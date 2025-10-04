@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
     promoInput.value = savedPromo;
     promoDisplay.textContent = `📢 ${savedPromo}`;
   }
-  fetchAllInfo();
+  fetchNewsOnly();
 });
 
 promoInput.addEventListener('input', () => {
@@ -87,9 +87,21 @@ function triggerJihou(video, audio) {
   };
 }
 
-function fetchAllInfo() {
-  fetch("https://api.p2pquake.net/v2/history?limit=1")
+// ✅ ニュースのみ取得
+function fetchNewsOnly() {
+  const newsAPI = "YOUR_NEWSAPI_KEY";
+  fetch(`https://newsapi.org/v2/top-headlines?country=jp&language=ja&pageSize=5&apiKey=${newsAPI}`)
     .then(res => res.json())
     .then(data => {
-      const eq = data[0].earthquake;
-      const loc = eq.hypocenter.name
+      const headlines = data.articles.map(a => `📰 ${a.title}`).join('　');
+      const promo = promoInput.value.trim();
+      const promoText = promo ? `📢 ${promo}` : "";
+      newsText.textContent = `${promoText}　${headlines}`;
+    })
+    .catch(err => {
+      console.error("ニュース取得失敗:", err);
+      newsText.textContent = "📰 ニュース取得に失敗しました";
+    });
+}
+
+setInterval(fetchNewsOnly, 60000);

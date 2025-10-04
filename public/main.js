@@ -1,56 +1,37 @@
-// public/main.js
 const video = document.getElementById('jihou-video');
 const enableBtn = document.getElementById('enable-audio');
 const disableBtn = document.getElementById('disable-audio');
 
-window.addEventListener('DOMContentLoaded', () => {
-  const savedState = localStorage.getItem('jihou-status');
-  if (savedState === 'enabled') {
-    video.muted = false;
-    enableBtn.style.display = 'none';
-    disableBtn.style.display = 'inline-block';
-  } else {
-    video.muted = true;
-    enableBtn.style.display = 'inline-block';
-    disableBtn.style.display = 'none';
-  }
-});
+let jihouEnabled = false;
 
+// ボタン操作で時報の有効/無効を切り替え
 enableBtn.addEventListener('click', () => {
-  video.muted = false;
-  video.load();
+  jihouEnabled = true;
   enableBtn.style.display = 'none';
   disableBtn.style.display = 'inline-block';
-  localStorage.setItem('jihou-status', 'enabled');
 });
 
 disableBtn.addEventListener('click', () => {
-  video.muted = true;
-  video.load();
+  jihouEnabled = false;
   disableBtn.style.display = 'none';
   enableBtn.style.display = 'inline-block';
-  localStorage.setItem('jihou-status', 'disabled');
 });
 
+// 時報のターゲット時刻（23:59:39）
+const targetHour = 23;
+const targetMinute = 59;
+const targetSecond = 39;
+
+// 毎秒チェックして時報を鳴らす
 setInterval(() => {
   const now = new Date();
-  if (now.getHours() === 0 && now.getMinutes() === 10 && now.getSeconds() === 0) {
-    triggerJihou();
+  if (
+    jihouEnabled &&
+    now.getHours() === targetHour &&
+    now.getMinutes() === targetMinute &&
+    now.getSeconds() === targetSecond
+  ) {
+    video.muted = false; // 🔊 音をONにする
+    video.play();
   }
 }, 1000);
-
-function triggerJihou() {
-  enableBtn.style.display = 'none';
-  disableBtn.style.display = 'none';
-  video.play();
-
-  video.onended = () => {
-    const savedState = localStorage.getItem('jihou-status');
-    if (savedState === 'enabled') {
-      disableBtn.style.display = 'inline-block';
-    } else {
-      enableBtn.style.display = 'inline-block';
-    }
-  };
-}
-

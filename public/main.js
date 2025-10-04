@@ -36,7 +36,7 @@ const targetSecond = 39;
 // 毎秒チェックして時報を鳴らす
 let alreadyPlayed = false;
 
-setInterval(() => {
+setTimeout(() => {
   const now = new Date();
   const current = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   const target = targetHour * 3600 + targetMinute * 60 + targetSecond;
@@ -54,6 +54,7 @@ setInterval(() => {
     });
   }
 }, 1000);
+
 
 
 

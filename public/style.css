@@ -1,44 +1,65 @@
+/* public/style.css */
 body {
+  margin: 0;
   font-family: sans-serif;
-  text-align: center;
-  background-color: #fff;
-  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 #jihou-banner {
-  margin-top: 30px;
-  background-color: #000;
-  padding-bottom: 60px;
   position: relative;
+  width: 100%;
+  height: 50px;
+  background-color: black;
+  overflow: hidden;
 }
 
 #jihou-video {
-  width: 300px;
-  margin-top: 20px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#jihou-controls {
+  position: absolute;
+  bottom: -6px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .icon-button {
-  background: none;
+  background-color: black;
   border: none;
+  padding: 10px;
   cursor: pointer;
-  border-radius: 50%; /* ← 丸みはそのまま維持 */
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
 }
 
 .icon-button img {
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
 }
 
+/* ニュースバーの追加（形は変えずに流すだけ） */
 #news-bar {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 40px;
+  height: 30px;
   overflow: hidden;
-  background-color: #000;
-  color: #fff;
+  background-color: black;
+  color: white;
+  font-size: 14px;
   display: none;
-  z-index: 999;
+  z-index: 10;
 }
 
 .news-text {

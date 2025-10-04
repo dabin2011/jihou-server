@@ -1,17 +1,16 @@
-<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>シゲシゲ時報</title>
+  <title>シゲシゲ音声時報</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="jihou-banner">
-    <video id="jihou-video">
-      <source src="videos/jihou.mp4" type="video/mp4">
-    </video>
+    <!-- 音声ファイルだけを使う -->
+    <audio id="jihou-audio" src="sounds/jihou.mp3"></audio>
 
+    <!-- 音声ON/OFF切り替えボタン -->
     <div id="jihou-controls">
       <button id="enable-audio" class="icon-button">
         <img src="icons/sound-on.png" alt="時報を有効にする" />

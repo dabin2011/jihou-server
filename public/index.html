@@ -7,9 +7,15 @@
 </head>
 <body>
   <div id="jihou-banner">
-    <video id="jihou-video" src="videos/jihou-video.mp4" style="display:none;"></video>
-    <audio id="jihou-audio" src="sounds/jihou-audio.mp3"></audio>
+    <!-- 映像（0時・14時） -->
+    <video id="jihou-video-0" src="videos/jihou-0am.mp4" style="display:none;"></video>
+    <video id="jihou-video-14" src="videos/jihou-2pm.mp4" style="display:none;"></video>
 
+    <!-- 音声（0時・14時） -->
+    <audio id="jihou-audio-0" src="sounds/jihou-0am.mp3"></audio>
+    <audio id="jihou-audio-14" src="sounds/jihou-2pm.mp3"></audio>
+
+    <!-- 音声ON/OFF切り替え -->
     <div id="jihou-controls">
       <button id="enable-audio" class="icon-button">
         <img src="icons/sound-on.png" alt="時報を有効にする" />
@@ -24,7 +30,7 @@
       <div class="news-text" id="news-text"></div>
     </div>
 
-    <!-- 宣伝入力欄（黒背景内に配置） -->
+    <!-- 宣伝バー -->
     <div id="promo-bar">
       <input type="text" id="promo-input" placeholder="宣伝文を入力" />
       <div id="promo-display"></div>

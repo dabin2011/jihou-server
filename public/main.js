@@ -19,7 +19,7 @@ disableBtn.addEventListener('click', () => {
 
 // 時報のターゲット時刻（00:40:39）
 const targetHour = 0;
-const targetMinute = 40;
+const targetMinute = 50;
 const targetSecond = 39;
 
 // 毎秒チェックして時報を鳴らす
@@ -34,6 +34,7 @@ if (jihouEnabled && Math.abs(current - target) <= 1) {
   video.play();
 }
 }, 1000);
+
 
 
 

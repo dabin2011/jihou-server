@@ -9,22 +9,6 @@ const promoDisplay = document.getElementById('promo-display');
 
 let alreadyPlayed = false;
 
-// 曜日別ニュース＋天気
-const weekdayNews = [
-  "🗓 日曜ニュース：町田市で秋祭り開催中！",
-  "🗓 月曜ニュース：市役所前で献血キャンペーン",
-  "🗓 火曜ニュース：駅前に新カフェオープン",
-  "🗓 水曜ニュース：図書館で読書週間スタート",
-  "🗓 木曜ニュース：町田高校が全国大会へ",
-  "🗓 金曜ニュース：週末はフリーマーケット開催",
-  "🗓 土曜ニュース：市民ホールで音楽フェス"
-];
-
-const today = new Date();
-const day = today.getDay(); // 0 = 日曜
-const weather = "☁️ 今日の町田市の天気：28°C / 21°C、曇り";
-newsText.textContent = `${weekdayNews[day]}　${weather}`;
-
 // 宣伝入力イベント
 promoInput.addEventListener('input', () => {
   promoDisplay.textContent = promoInput.value;
@@ -40,6 +24,8 @@ window.addEventListener('DOMContentLoaded', () => {
     enableBtn.style.display = 'inline-block';
     disableBtn.style.display = 'none';
   }
+
+  fetchNewsAndWeather();
 });
 
 // 再生許可取得
@@ -110,4 +96,34 @@ function triggerJihou() {
       enableBtn.style.display = 'inline-block';
     }
   };
+}
+
+// ✅ ニュースと天気をAPIで取得
+function fetchNewsAndWeather() {
+  const weekdayNews = [
+    "日曜：町田市で秋祭り開催中！",
+    "月曜：市役所前で献血キャンペーン",
+    "火曜：駅前に新カフェオープン",
+    "水曜：図書館で読書週間スタート",
+    "木曜：町田高校が全国大会へ",
+    "金曜：週末はフリーマーケット開催",
+    "土曜：市民ホールで音楽フェス"
+  ];
+  const day = new Date().getDay();
+  const news = weekdayNews[day];
+
+  // 天気API（OpenWeatherMap例）
+  const apiKey = "YOUR_API_KEY"; // ← 自分のAPIキーに置き換えてください
+  const city = "Machida,jp";
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ja&appid=${apiKey}`)
+    .then(res => res.json())
+    .then(data => {
+      const temp = Math.round(data.main.temp);
+      const desc = data.weather[0].description;
+      newsText.textContent = `📰 ${news}　☁️ 現在の町田市の天気：${temp}°C、${desc}`;
+    })
+    .catch(err => {
+      console.error("天気取得失敗:", err);
+      newsText.textContent = `📰 ${news}　☁️ 天気情報の取得に失敗しました`;
+    });
 }

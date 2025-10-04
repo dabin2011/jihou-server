@@ -1,3 +1,4 @@
+// public/main.js
 const video = document.getElementById('jihou-video');
 const audio = document.getElementById('jihou-audio');
 const enableBtn = document.getElementById('enable-audio');

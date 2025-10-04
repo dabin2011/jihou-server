@@ -9,14 +9,11 @@ const promoDisplay = document.getElementById('promo-display');
 
 let alreadyPlayed = false;
 
-// 宣伝入力イベント
-promoInput.addEventListener('input', () => {
-  promoDisplay.textContent = promoInput.value;
-});
-
-// 初期状態の読み込み
+// 宣伝履歴の読み込み
 window.addEventListener('DOMContentLoaded', () => {
   const savedState = localStorage.getItem('jihou-status');
+  const savedPromo = localStorage.getItem('promo-text');
+
   if (savedState === 'enabled') {
     enableBtn.style.display = 'none';
     disableBtn.style.display = 'inline-block';
@@ -25,7 +22,19 @@ window.addEventListener('DOMContentLoaded', () => {
     disableBtn.style.display = 'none';
   }
 
+  if (savedPromo) {
+    promoInput.value = savedPromo;
+    promoDisplay.textContent = savedPromo;
+  }
+
   fetchNewsAndWeather();
+});
+
+// 宣伝入力イベント＋履歴保存
+promoInput.addEventListener('input', () => {
+  const text = promoInput.value;
+  promoDisplay.textContent = text;
+  localStorage.setItem('promo-text', text);
 });
 
 // 再生許可取得
@@ -35,9 +44,7 @@ enableBtn.addEventListener('click', () => {
     audio.pause();
     audio.currentTime = 0;
     audio.muted = false;
-  }).catch((err) => {
-    console.error('再生許可失敗:', err);
-  });
+  }).catch(err => console.error('再生許可失敗:', err));
 
   enableBtn.style.display = 'none';
   disableBtn.style.display = 'inline-block';
@@ -82,7 +89,6 @@ function triggerJihou() {
 
   video.currentTime = 0;
   audio.currentTime = 0;
-
   video.style.display = 'block';
 
   video.play().catch(err => console.error('映像再生失敗:', err));
@@ -98,7 +104,7 @@ function triggerJihou() {
   };
 }
 
-// ✅ ニュースと天気をAPIで取得
+// ニュースと天気を取得（ダミー構成）
 function fetchNewsAndWeather() {
   const weekdayNews = [
     "日曜：町田市で秋祭り開催中！",
@@ -111,19 +117,7 @@ function fetchNewsAndWeather() {
   ];
   const day = new Date().getDay();
   const news = weekdayNews[day];
+  const weather = "☁️ 今日の町田市の天気：28°C / 21°C、曇り";
 
-  // 天気API（OpenWeatherMap例）
-  const apiKey = "YOUR_API_KEY"; // ← 自分のAPIキーに置き換えてください
-  const city = "Machida,jp";
-  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ja&appid=${apiKey}`)
-    .then(res => res.json())
-    .then(data => {
-      const temp = Math.round(data.main.temp);
-      const desc = data.weather[0].description;
-      newsText.textContent = `📰 ${news}　☁️ 現在の町田市の天気：${temp}°C、${desc}`;
-    })
-    .catch(err => {
-      console.error("天気取得失敗:", err);
-      newsText.textContent = `📰 ${news}　☁️ 天気情報の取得に失敗しました`;
-    });
+  newsText.textContent = `📰 ${news}　${weather}`;
 }

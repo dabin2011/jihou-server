@@ -35,11 +35,21 @@ disableBtn.addEventListener('click', () => {
 setInterval(() => {
   const now = new Date();
   if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
-  if (now.getHours() === 0 && now.getMinutes() === 10 && now.getSeconds() === 0) {
     triggerJihou();
   }
 }, 1000);
-@@ -53,3 +53,4 @@
+
+function triggerJihou() {
+  enableBtn.style.display = 'none';
+  disableBtn.style.display = 'none';
+  video.play();
+
+  video.onended = () => {
+    const savedState = localStorage.getItem('jihou-status');
+    if (savedState === 'enabled') {
+      disableBtn.style.display = 'inline-block';
+    } else {
+      enableBtn.style.display = 'inline-block';
     }
   };
 }

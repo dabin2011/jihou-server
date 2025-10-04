@@ -22,6 +22,7 @@ app.get('/weather', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log('✅ 天気サーバー起動中 http://localhost:3000');
 });
+

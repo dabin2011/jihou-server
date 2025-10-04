@@ -1,49 +1,31 @@
-/* public/style.css */
 body {
-  margin: 0;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  text-align: center;
+  background-color: #f4f4f4;
+  padding: 50px;
 }
 
 #jihou-banner {
-  position: relative;
-  width: 100%;
-  height: 50px;
-  background-color: black;
-  overflow: hidden;
+  margin-top: 30px;
 }
 
 #jihou-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-#jihou-controls {
-  position: absolute;
-  bottom: -6px;
-  right: 10px;
-  display: flex;
-  gap: 10px;
+  width: 300px;
+  margin-top: 20px;
 }
 
 .icon-button {
-  background-color: black;
+  background: none;
   border: none;
-  padding: 10px;
   cursor: pointer;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
 }
 
-.icon-button img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+#play-jihou {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #ffcc00;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }

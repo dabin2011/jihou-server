@@ -14,16 +14,18 @@ const audios = {
 const adBar = document.getElementById('ad-bar');
 const adText = document.getElementById('ad-text');
 
-const ads = [
+const adForm = document.getElementById('ad-form');
+const adInput = document.getElementById('ad-input');
+
+let ads = [
   "🌟 シゲシゲ電機、秋のセール開催中！",
-  "📣 町田市の焼き鳥屋『とり吉』、本日半額！",
-  "🎬 新作映画『時報の彼方』、全国ロードショー！",
-  "🧴 スキンケアブランド『黒美』、初回限定30%OFF！",
-  "📻 ラジオ番組『シゲシゲタイム』、毎朝8時放送中！"
+  "📣 焼き鳥屋『とり吉』、本日半額！",
+  "🎬 映画『時報の彼方』、全国ロードショー！"
 ];
 
 let alreadyPlayed = false;
 
+// 音声切り替え
 enableBtn.addEventListener('click', () => {
   localStorage.setItem('jihou-status', 'enabled');
   enableBtn.style.display = 'none';
@@ -47,16 +49,17 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-function showRandomAd() {
-  const randomAd = ads[Math.floor(Math.random() * ads.length)];
-  adText.textContent = randomAd;
-  adBar.style.display = 'flex';
-}
+// 投稿処理（ローカル保存）
+adForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const newAd = adInput.value.trim();
+  if (newAd) {
+    ads.push(newAd);
+    adInput.value = '';
+  }
+});
 
-function hideAd() {
-  adBar.style.display = 'none';
-}
-
+// 時報チェック
 setInterval(() => {
   const now = new Date();
   const h = now.getHours();
@@ -78,6 +81,18 @@ setInterval(() => {
   }
 }, 1000);
 
+// 広告表示
+function showRandomAd() {
+  const randomAd = ads[Math.floor(Math.random() * ads.length)];
+  adText.textContent = randomAd;
+  adBar.style.display = 'flex';
+}
+
+function hideAd() {
+  adBar.style.display = 'none';
+}
+
+// 時報再生
 function triggerJihou(video, audio) {
   enableBtn.style.display = 'none';
   disableBtn.style.display = 'none';

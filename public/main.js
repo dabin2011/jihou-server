@@ -31,7 +31,7 @@ disableBtn.addEventListener('click', () => {
 
 // 🔔 時報のターゲット時刻（ここを好きな時間に変更）
 const targetHour = 1;
-const targetMinute = 45;
+const targetMinute = 50;
 const targetSecond = 0;
 
 // 毎秒チェックして時報ボタンを表示
@@ -58,3 +58,4 @@ playBtn.addEventListener('click', () => {
     console.error('❌ 時報再生失敗:', err);
   });
 });
+

@@ -21,6 +21,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
+  border-radius: 50%; /* ← 丸みはそのまま維持 */
 }
 
 .icon-button img {

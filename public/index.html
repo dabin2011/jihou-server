@@ -2,15 +2,18 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>シゲシゲ音声時報</title>
+  <title>シゲシゲ時報</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="jihou-banner">
-    <!-- 音声ファイルだけを使う -->
-    <audio id="jihou-audio" src="sounds/jihou.mp3"></audio>
+    <!-- 映像のみ -->
+    <video id="jihou-video" src="videos/jihou-video.mp4" style="display:none;"></video>
 
-    <!-- 音声ON/OFF切り替えボタン -->
+    <!-- 音声のみ -->
+    <audio id="jihou-audio" src="sounds/jihou-audio.mp3"></audio>
+
+    <!-- 音声ON/OFF切り替え -->
     <div id="jihou-controls">
       <button id="enable-audio" class="icon-button">
         <img src="icons/sound-on.png" alt="時報を有効にする" />

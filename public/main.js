@@ -30,8 +30,8 @@ disableBtn.addEventListener('click', () => {
 
 // 🔔 時報のターゲット時刻（ここを好きな時間に変更）
 const targetHour = 1;
-const targetMinute = 25;
-const targetSecond = 39;
+const targetMinute = 40;
+const targetSecond = 00;
 
 // 毎秒チェックして時報を鳴らす
 let alreadyPlayed = false;
@@ -54,6 +54,7 @@ setInterval(() => {
     });
   }
 }, 1000);
+
 
 
 

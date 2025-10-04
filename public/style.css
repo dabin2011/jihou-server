@@ -1,9 +1,6 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
 #jihou-banner {
@@ -12,12 +9,6 @@ body {
   height: 50px;
   background-color: black;
   overflow: hidden;
-}
-
-#jihou-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 #jihou-controls {
@@ -35,9 +26,6 @@ body {
   padding: 10px;
   cursor: pointer;
   border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 64px;
   height: 64px;
 }
@@ -48,9 +36,8 @@ body {
   border-radius: 50%;
 }
 
-#news-bar {
+#news-bar, #promo-bar {
   position: absolute;
-  bottom: 0;
   width: 100%;
   height: 30px;
   overflow: hidden;
@@ -59,9 +46,15 @@ body {
   z-index: 5;
 }
 
+#news-bar {
+  bottom: 0;
+}
+
+#promo-bar {
+  top: 4px;
+}
+
 .news-text {
-  position: relative;
-  top: -6px;
   white-space: nowrap;
   display: inline-block;
   padding-left: 100%;
@@ -71,26 +64,14 @@ body {
 }
 
 @keyframes scroll-left {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-/* 宣伝入力欄（黒背景内に収める） */
-#promo-bar {
-  position: absolute;
-  top: 4px;
-  left: 10px;
-  z-index: 6;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
 }
 
 #promo-input {
+  position: absolute;
+  top: 0;
+  left: 10px;
   font-size: 12px;
   padding: 4px 8px;
   border: none;
@@ -98,14 +79,5 @@ body {
   background-color: #222;
   color: #fff;
   width: 180px;
-}
-
-#promo-display {
-  margin-top: 2px;
-  font-size: 12px;
-  color: #ccc;
-  max-width: 180px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  z-index: 6;
 }

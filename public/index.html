@@ -1,53 +1,27 @@
+<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>時報サーバー</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding-top: 100px;
-    }
-    h1 {
-      font-size: 2em;
-    }
-    #status {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: green;
-    }
-  </style>
+  <title>シゲシゲ時報</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>時報サーバー</h1>
-  <p>23:59:39 に時報が鳴ります</p>
-  <div id="status">待機中...</div>
+  <div id="jihou-banner">
+    <video id="jihou-video">
+      <source src="videos/jihou.mp4" type="video/mp4">
+    </video>
 
-  <audio id="bell" src="videos/bell.mp3" preload="auto"></audio>
+    <div id="jihou-controls">
+      <button id="enable-audio" class="icon-button">
+        <img src="icons/sound-on.png" alt="時報を有効にする" />
+      </button>
+      <button id="disable-audio" class="icon-button" style="display:none;">
+        <img src="icons/sound-off.png" alt="時報を無効にする" />
+      </button>
+    </div>
+  </div>
 
-  <script>
-    const target = new Date();
-    target.setHours(23);
-    target.setMinutes(59);
-    target.setSeconds(39);
-    target.setMilliseconds(0);
-
-    const now = new Date();
-    const delay = target - now;
-
-    const status = document.getElementById('status');
-
-    if (delay > 0) {
-      status.textContent = `あと ${Math.floor(delay / 1000)} 秒で鳴ります`;
-      setTimeout(() => {
-        document.getElementById('bell').play();
-        status.textContent = '🔔 時報が鳴りました！';
-      }, delay);
-    } else {
-      status.textContent = '指定時間はすでに過ぎています';
-    }
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
-

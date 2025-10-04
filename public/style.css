@@ -35,3 +35,30 @@ body {
   height: 32px;
   border-radius: 50%;
 }
+
+/* 広告バー */
+#ad-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 5;
+}
+
+#ad-text {
+  animation: scrollText 20s linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes scrollText {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}

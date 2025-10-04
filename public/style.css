@@ -47,18 +47,23 @@ body {
   color: white;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: bold;
+  overflow: hidden;
   z-index: 5;
 }
 
 #ad-text {
-  animation: scrollText 20s linear infinite;
   white-space: nowrap;
+  animation: scrollText 20s linear infinite;
 }
 
 @keyframes scrollText {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
+}
+
+/* 投稿フォーム（必要なら display: none; に） */
+#ad-form {
+  margin: 10px;
+  display: flex;
+  gap: 10px;
 }

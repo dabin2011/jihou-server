@@ -6,8 +6,8 @@ const promoInput = document.getElementById('promo-input');
 const promoDisplay = document.getElementById('promo-display');
 
 const videos = {
-  "11:59": document.getElementById('jihou-video-0'),
-  "13:59": document.getElementById('jihou-video-14')
+  "0:0": document.getElementById('jihou-video-0'),
+  "14:0": document.getElementById('jihou-video-14')
 };
 
 const audios = {
@@ -17,43 +17,22 @@ const audios = {
 
 let alreadyPlayed = false;
 
-// 宣伝履歴の読み込み
 window.addEventListener('DOMContentLoaded', () => {
   const savedPromo = localStorage.getItem('promo-text');
   if (savedPromo) {
     promoInput.value = savedPromo;
-    promoDisplay.textContent = savedPromo;
+    promoDisplay.textContent = `📢 ${savedPromo}`;
   }
   fetchAllInfo();
-
-  const savedState = localStorage.getItem('jihou-status');
-  if (savedState === 'enabled') {
-    enableBtn.style.display = 'none';
-    disableBtn.style.display = 'inline-block';
-  } else {
-    enableBtn.style.display = 'inline-block';
-    disableBtn.style.display = 'none';
-  }
 });
 
-// 宣伝入力イベント＋保存
 promoInput.addEventListener('input', () => {
   const text = promoInput.value;
-  promoDisplay.textContent = text;
+  promoDisplay.textContent = `📢 ${text}`;
   localStorage.setItem('promo-text', text);
 });
 
-// 音声ON/OFF切り替え
 enableBtn.addEventListener('click', () => {
-  Object.values(audios).forEach(audio => {
-    audio.muted = true;
-    audio.play().then(() => {
-      audio.pause();
-      audio.currentTime = 0;
-      audio.muted = false;
-    }).catch(() => {});
-  });
-
   enableBtn.style.display = 'none';
   disableBtn.style.display = 'inline-block';
   localStorage.setItem('jihou-status', 'enabled');
@@ -65,7 +44,6 @@ disableBtn.addEventListener('click', () => {
   localStorage.setItem('jihou-status', 'disabled');
 });
 
-// 時報チェック（0:00と14:00のみ）
 setInterval(() => {
   const now = new Date();
   const h = now.getHours();
@@ -87,7 +65,6 @@ setInterval(() => {
   }
 }, 1000);
 
-// 時報発火（映像＋音声）
 function triggerJihou(video, audio) {
   enableBtn.style.display = 'none';
   disableBtn.style.display = 'none';
@@ -110,39 +87,9 @@ function triggerJihou(video, audio) {
   };
 }
 
-// ニュース・天気・地震情報の取得（毎分更新）
 function fetchAllInfo() {
-  const newsAPI = "8235d3f5146640bc89ea8974ef39a37e";
-  const weatherAPI = "YOUR_OPENWEATHER_KEY";
-  const city = "Machida,jp";
-
-  fetch(`https://newsapi.org/v2/top-headlines?country=jp&language=ja&pageSize=5&apiKey=${newsAPI}`)
+  fetch("https://api.p2pquake.net/v2/history?limit=1")
     .then(res => res.json())
     .then(data => {
-      const headlines = data.articles.map(a => `📰 ${a.title}`).join('　');
-
-      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ja&appid=${weatherAPI}`)
-        .then(res => res.json())
-        .then(weatherData => {
-          const temp = Math.round(weatherData.main.temp);
-          const desc = weatherData.weather[0].description;
-          const weather = `☁️ 町田市の天気：${temp}°C、${desc}`;
-
-          fetch("https://earthquake.tenki.jp/bousai/earthquake/")
-            .then(res => res.text())
-            .then(html => {
-              const match = html.match(/最大震度[0-9].+?地震/);
-              const quake = match ? `🌏 地震速報：${match[0]}` : "🌏 地震速報：最新情報取得中";
-              newsText.textContent = `${headlines}　${weather}　${quake}`;
-            });
-        });
-    })
-    .catch(err => {
-      console.error("情報取得失敗:", err);
-      newsText.textContent = "📰 情報取得に失敗しました　☁️ 天気：取得中　🌏 地震：取得中";
-    });
-}
-
-setInterval(fetchAllInfo, 60000);
-
-
+      const eq = data[0].earthquake;
+      const loc = eq.hypocenter.name

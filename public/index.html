@@ -24,29 +24,4 @@
 
   <script src="main.js"></script>
 </body>
-</html> = document.getElementById('shigeVideo');
-
-    const target = new Date();
-    target.setHours(23);
-    target.setMinutes(59);
-    target.setSeconds(39);
-    target.setMilliseconds(0);
-
-    const now = new Date();
-    const delay = target - now;
-
-    if (delay > 0) {
-      status.textContent = `あと ${Math.floor(delay / 1000)} 秒で再生されます`;
-
-      setTimeout(() => {
-        video.style.display = 'block';
-        video.play();
-        status.textContent = '🎬 シゲシゲ動画が再生されました！';
-      }, delay);
-    } else {
-      status.textContent = '指定時間はすでに過ぎています';
-    }
-  </script>
-</body>
 </html>
-

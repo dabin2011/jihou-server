@@ -42,7 +42,7 @@ setInterval(() => {
   const now = new Date();
   if (
     now.getHours() === 2 &&
-    now.getMinutes() === 35 &&
+    now.getMinutes() === 40 &&
     now.getSeconds() === 0 &&
     localStorage.getItem('jihou-status') === 'enabled'
   ) {
@@ -63,3 +63,4 @@ function triggerJihou() {
     console.error('❌ 音声再生失敗:', err);
   });
 }
+

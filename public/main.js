@@ -34,7 +34,7 @@ disableBtn.addEventListener('click', () => {
 
 setInterval(() => {
   const now = new Date();
-  if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
+  if (now.getHours() === 0 && now.getMinutes() === 10 && now.getSeconds() === 0) {
     triggerJihou();
   }
 }, 1000);
@@ -53,3 +53,4 @@ function triggerJihou() {
     }
   };
 }
+

@@ -1,6 +1,7 @@
 const video = document.getElementById('jihou-video');
 const enableBtn = document.getElementById('enable-audio');
 const disableBtn = document.getElementById('disable-audio');
+const playBtn = document.getElementById('play-jihou');
 
 let jihouEnabled = false;
 
@@ -30,33 +31,30 @@ disableBtn.addEventListener('click', () => {
 
 // 🔔 時報のターゲット時刻（ここを好きな時間に変更）
 const targetHour = 1;
-const targetMinute = 40;
-const targetSecond = 00;
+const targetMinute = 45;
+const targetSecond = 0;
 
-// 毎秒チェックして時報を鳴らす
-let alreadyPlayed = false;
-
+// 毎秒チェックして時報ボタンを表示
 setInterval(() => {
   const now = new Date();
   const current = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   const target = targetHour * 3600 + targetMinute * 60 + targetSecond;
 
-  if (jihouEnabled && !alreadyPlayed && Math.abs(current - target) <= 1) {
-    alreadyPlayed = true;
-    video.currentTime = 0;
-    video.muted = false;
-    video.volume = 1.0;
-    video.style.display = 'block';
-    video.play().then(() => {
-      console.log('✅ 時報再生成功');
-    }).catch((err) => {
-      console.error('❌ 時報再生失敗:', err);
-    });
+  if (jihouEnabled && Math.abs(current - target) <= 1) {
+    playBtn.style.display = 'inline-block';
   }
 }, 1000);
 
-
-
-
-
-
+// ユーザーが時報ボタンを押したら再生
+playBtn.addEventListener('click', () => {
+  video.currentTime = 0;
+  video.muted = false;
+  video.volume = 1.0;
+  video.style.display = 'block';
+  video.play().then(() => {
+    console.log('✅ 時報再生成功');
+    playBtn.style.display = 'none';
+  }).catch((err) => {
+    console.error('❌ 時報再生失敗:', err);
+  });
+});

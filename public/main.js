@@ -2,7 +2,7 @@ const video = document.getElementById('jihou-video');
 const enableBtn = document.getElementById('enable-audio');
 const disableBtn = document.getElementById('disable-audio');
 
-// 最初から時報ON（テスト用）
+// テスト用：最初から時報ON
 let jihouEnabled = true;
 enableBtn.style.display = 'none';
 disableBtn.style.display = 'inline-block';
@@ -26,7 +26,16 @@ setTimeout(() => {
     video.muted = false;
     video.volume = 1.0;
     video.style.display = 'block';
-    video.play();
-    console.log('✅ 動画を再生しました');
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log('✅ 動画再生成功');
+        })
+        .catch((error) => {
+          console.error('❌ 動画再生失敗:', error);
+        });
+    }
   }
-}, 30000); // ← 30秒後
+}, 30000); // ← ページ読み込みから30秒後

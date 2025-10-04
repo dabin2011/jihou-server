@@ -1,4 +1,3 @@
-// public/main.js
 const video = document.getElementById('jihou-video');
 const enableBtn = document.getElementById('enable-audio');
 const disableBtn = document.getElementById('disable-audio');
@@ -17,8 +16,17 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 enableBtn.addEventListener('click', () => {
-  video.muted = false;
-  video.load();
+  // 再生許可を得るために一瞬だけ無音再生
+  video.muted = true;
+  video.play().then(() => {
+    video.pause();
+    video.currentTime = 0;
+    video.muted = false;
+    console.log('✅ 再生許可取得済み');
+  }).catch((err) => {
+    console.error('❌ 再生許可失敗:', err);
+  });
+
   enableBtn.style.display = 'none';
   disableBtn.style.display = 'inline-block';
   localStorage.setItem('jihou-status', 'enabled');
@@ -40,12 +48,24 @@ setInterval(() => {
 }, 1000);
 
 function triggerJihou() {
+  const savedState = localStorage.getItem('jihou-status');
+  if (savedState !== 'enabled') return;
+
   enableBtn.style.display = 'none';
   disableBtn.style.display = 'none';
-  video.play();
+
+  video.currentTime = 0;
+  video.muted = false;
+  video.volume = 1.0;
+  video.style.display = 'block';
+
+  video.play().then(() => {
+    console.log('✅ 時報再生成功');
+  }).catch((err) => {
+    console.error('❌ 時報再生失敗:', err);
+  });
 
   video.onended = () => {
-    const savedState = localStorage.getItem('jihou-status');
     if (savedState === 'enabled') {
       disableBtn.style.display = 'inline-block';
     } else {

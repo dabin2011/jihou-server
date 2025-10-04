@@ -6,8 +6,8 @@ const promoInput = document.getElementById('promo-input');
 const promoDisplay = document.getElementById('promo-display');
 
 const videos = {
-  "0:0": document.getElementById('jihou-video-0'),
-  "14:0": document.getElementById('jihou-video-14')
+  "11:59": document.getElementById('jihou-video-0'),
+  "13:59": document.getElementById('jihou-video-14')
 };
 
 const audios = {
@@ -144,3 +144,4 @@ function fetchAllInfo() {
 }
 
 setInterval(fetchAllInfo, 60000);
+

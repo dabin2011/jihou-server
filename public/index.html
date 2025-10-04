@@ -7,13 +7,9 @@
 </head>
 <body>
   <div id="jihou-banner">
-    <!-- 映像のみ -->
     <video id="jihou-video" src="videos/jihou-video.mp4" style="display:none;"></video>
-
-    <!-- 音声のみ -->
     <audio id="jihou-audio" src="sounds/jihou-audio.mp3"></audio>
 
-    <!-- 音声ON/OFF切り替え -->
     <div id="jihou-controls">
       <button id="enable-audio" class="icon-button">
         <img src="icons/sound-on.png" alt="時報を有効にする" />
@@ -23,12 +19,16 @@
       </button>
     </div>
 
-    <!-- ニュースバー（ボタンの下を通るように配置） -->
+    <!-- ニュースバー -->
     <div id="news-bar">
-      <div class="news-text">
-        📰 最新ニュース：町田市で秋祭り開催中！ / 台風18号は関東から離れつつあります / 為替は1ドル＝149円台で推移中
-      </div>
+      <div class="news-text" id="news-text"></div>
     </div>
+  </div>
+
+  <!-- 宣伝枠 -->
+  <div id="promo-area">
+    <input type="text" id="promo-input" placeholder="宣伝文を入力してください" />
+    <div id="promo-display"></div>
   </div>
 
   <script src="main.js"></script>

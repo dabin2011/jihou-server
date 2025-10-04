@@ -43,6 +43,7 @@ setInterval(() => {
     video.muted = false;
     video.volume = 1.0;
     video.style.display = 'block';
+    video.currentTime = 0;
     video.play().then(() => {
       console.log('✅ 時報再生成功');
     }).catch((err) => {

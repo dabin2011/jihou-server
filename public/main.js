@@ -34,16 +34,19 @@ const targetMinute = 11;
 const targetSecond = 39;
 
 // 毎秒チェックして時報を鳴らす
+let alreadyPlayed = false;
+
 setInterval(() => {
   const now = new Date();
   const current = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   const target = targetHour * 3600 + targetMinute * 60 + targetSecond;
 
-  if (jihouEnabled && Math.abs(current - target) <= 1) {
+  if (jihouEnabled && !alreadyPlayed && Math.abs(current - target) <= 1) {
+    alreadyPlayed = true;
+    video.currentTime = 0;
     video.muted = false;
     video.volume = 1.0;
     video.style.display = 'block';
-    video.currentTime = 0;
     video.play().then(() => {
       console.log('✅ 時報再生成功');
     }).catch((err) => {
@@ -51,4 +54,5 @@ setInterval(() => {
     });
   }
 }, 1000);
+
 

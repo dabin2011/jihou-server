@@ -27,6 +27,7 @@ body {
   right: 10px;
   display: flex;
   gap: 10px;
+  z-index: 10;
 }
 
 .icon-button {
@@ -48,24 +49,26 @@ body {
   border-radius: 50%;
 }
 
-/* ニュースバーの追加（形は変えずに流すだけ） */
+/* ニュースバー（ボタンの下を通るように配置） */
 #news-bar {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 30px;
   overflow: hidden;
-  background-color: black;
-  color: white;
-  font-size: 14px;
-  display: none;
-  z-index: 10;
+  background-color: transparent;
+  pointer-events: none;
+  z-index: 5;
 }
 
 .news-text {
+  position: relative;
+  top: -6px;
   white-space: nowrap;
   display: inline-block;
   padding-left: 100%;
+  color: white;
+  font-size: 14px;
   animation: scroll-left 20s linear infinite;
 }
 

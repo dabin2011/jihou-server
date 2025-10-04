@@ -1,8 +1,5 @@
 const enableBtn = document.getElementById('enable-audio');
 const disableBtn = document.getElementById('disable-audio');
-const newsText = document.getElementById('news-text');
-const promoForm = document.getElementById('promo-form');
-const promoInput = document.getElementById('promo-input');
 
 const videos = {
   "0:0": document.getElementById('jihou-video-0'),
@@ -16,21 +13,26 @@ const audios = {
 
 let alreadyPlayed = false;
 
-window.addEventListener('DOMContentLoaded', () => {
-  fetchPromoMessages();
+enableBtn.addEventListener('click', () => {
+  localStorage.setItem('jihou-status', 'enabled');
+  enableBtn.style.display = 'none';
+  disableBtn.style.display = 'inline-block';
 });
 
-promoForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const text = promoInput.value.trim();
-  if (text) {
-    fetch('http://localhost:3000/promo', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text })
-    }).then(() => {
-      promoInput.value = '';
-    });
+disableBtn.addEventListener('click', () => {
+  localStorage.setItem('jihou-status', 'disabled');
+  disableBtn.style.display = 'none';
+  enableBtn.style.display = 'inline-block';
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  const savedState = localStorage.getItem('jihou-status');
+  if (savedState === 'enabled') {
+    enableBtn.style.display = 'none';
+    disableBtn.style.display = 'inline-block';
+  } else {
+    enableBtn.style.display = 'inline-block';
+    disableBtn.style.display = 'none';
   }
 });
 
@@ -42,8 +44,6 @@ setInterval(() => {
 
   const isEnabled = localStorage.getItem('jihou-status') === 'enabled';
   const isJihouTime = isEnabled && key in videos;
-
-  document.getElementById('news-bar').style.display = isJihouTime ? 'none' : 'block';
 
   if (isJihouTime && !alreadyPlayed) {
     alreadyPlayed = true;
@@ -76,19 +76,3 @@ function triggerJihou(video, audio) {
     }
   };
 }
-
-function fetchPromoMessages() {
-  fetch('http://localhost:3000/promo')
-    .then(res => res.json())
-    .then(data => {
-      const messages = data.messages;
-      if (messages.length > 0) {
-        const random = messages[Math.floor(Math.random() * messages.length)];
-        newsText.textContent = `📢 ${random}`;
-      } else {
-        newsText.textContent = '';
-      }
-    });
-}
-
-setInterval(fetchPromoMessages, 10000); // 10秒ごとにランダム更新

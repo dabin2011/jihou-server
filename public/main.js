@@ -24,17 +24,17 @@ const targetSecond = 39;
 
 // 毎秒チェックして時報を鳴らす
 setInterval(() => {
-  const now = new Date();
-  if (
-    jihouEnabled &&
-    now.getHours() === targetHour &&
-    now.getMinutes() === targetMinute &&
-    now.getSeconds() === targetSecond
-  ) {
-    video.muted = false; // 🔊 音をONにする
-    video.play();
-  }
+const now = new Date();
+const current = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+const target = targetHour * 3600 + targetMinute * 60 + targetSecond;
+
+if (jihouEnabled && Math.abs(current - target) <= 1) {
+  video.muted = false;
+  video.style.display = 'block';
+  video.play();
+}
 }, 1000);
+
 
 
 

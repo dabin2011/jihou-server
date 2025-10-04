@@ -1,17 +1,27 @@
 const express = require('express');
-const path = require('path');
+const axios = require('axios');
+const cheerio = require('cheerio');
+const cors = require('cors');
+
 const app = express();
+app.use(cors());
 
-// publicフォルダーを静的ファイルとして提供
-app.use(express.static('public'));
+app.get('/weather', async (req, res) => {
+  try {
+    const url = 'https://www.msn.com/ja-jp/weather/forecast/in-%E7%94%BA%E7%94%B0%E5%B8%82,%E6%9D%B1%E4%BA%AC%E9%83%BD';
+    const response = await axios.get(url);
+    const $ = cheerio.load(response.data);
 
-// ルートアクセスで index.html を返す
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    const temp = $('span.current').first().text().trim();
+    const desc = $('span.weather-desc').first().text().trim();
+
+    res.json({ temp, desc });
+  } catch (err) {
+    console.error('天気取得失敗:', err);
+    res.status(500).json({ error: '天気取得失敗' });
+  }
 });
 
-// Render用のポート設定
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(3000, () => {
+  console.log('✅ 天気サーバー起動中 http://localhost:3000');
 });

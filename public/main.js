@@ -3,6 +3,9 @@ const audio = document.getElementById('jihou-audio');
 const enableBtn = document.getElementById('enable-audio');
 const disableBtn = document.getElementById('disable-audio');
 
+let alreadyPlayed = false;
+
+// 初期状態の読み込み
 window.addEventListener('DOMContentLoaded', () => {
   const savedState = localStorage.getItem('jihou-status');
   if (savedState === 'enabled') {
@@ -14,8 +17,8 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// 再生許可取得
 enableBtn.addEventListener('click', () => {
-  // 再生許可を得るために一瞬だけ無音再生
   audio.muted = true;
   audio.play().then(() => {
     audio.pause();
@@ -37,20 +40,36 @@ disableBtn.addEventListener('click', () => {
   localStorage.setItem('jihou-status', 'disabled');
 });
 
-// 時刻指定（例：02:35:00）
+// 時報のターゲット時刻（時と分のみ）
+const targetHour = 2;
+const targetMinute = 45;
+
 setInterval(() => {
   const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinute = now.getMinutes();
+
   if (
-    now.getHours() === 2 &&
-    now.getMinutes() === 40 &&
-    now.getSeconds() === 0 &&
-    localStorage.getItem('jihou-status') === 'enabled'
+    localStorage.getItem('jihou-status') === 'enabled' &&
+    currentHour === targetHour &&
+    currentMinute === targetMinute &&
+    !alreadyPlayed
   ) {
+    alreadyPlayed = true;
     triggerJihou();
+  }
+
+  // 分が変わったらリセット
+  if (currentMinute !== targetMinute) {
+    alreadyPlayed = false;
   }
 }, 1000);
 
+// 音声＋映像を同時再生
 function triggerJihou() {
+  enableBtn.style.display = 'none';
+  disableBtn.style.display = 'none';
+
   video.currentTime = 0;
   audio.currentTime = 0;
 
@@ -62,5 +81,13 @@ function triggerJihou() {
   }).catch(err => {
     console.error('❌ 音声再生失敗:', err);
   });
-}
 
+  video.onended = () => {
+    const savedState = localStorage.getItem('jihou-status');
+    if (savedState === 'enabled') {
+      disableBtn.style.display = 'inline-block';
+    } else {
+      enableBtn.style.display = 'inline-block';
+    }
+  };
+}

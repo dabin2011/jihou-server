@@ -49,13 +49,14 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// 投稿処理（ローカル保存）
+// 投稿処理（ローカル保存＋即表示）
 adForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const newAd = adInput.value.trim();
   if (newAd) {
     ads.push(newAd);
     adInput.value = '';
+    showRandomAd(); // ← 投稿後すぐに表示
   }
 });
 

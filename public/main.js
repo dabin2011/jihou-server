@@ -24,7 +24,7 @@ let adIndex = 0;
 let alreadyPlayed = false;
 
 // Google Apps Script の WebアプリURL
-const SHEET_API_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyehuEEF5kZlKIVwmHlIX2s2pJw5B5YVFDcWW3kDzgLiv5t6lR7sfYMDszv2Va8KIZT/exec";
 
 // ✅ 音声切り替え
 enableBtn.addEventListener('click', () => {
@@ -154,3 +154,4 @@ function triggerJihou(video, audio) {
     }
   };
 }
+

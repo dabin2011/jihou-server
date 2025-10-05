@@ -7,9 +7,7 @@ let adIndex = 0;
 async function fetchAds() {
   try {
     const res = await fetch('https://api.pageclip.co/form/shigeshige-kokok/submissions', {
-      headers: {
-        'Authorization': 'Bearer api_rC6Mj9ZglhTVcSuR7qcEUdMCk05On7EO'
-      }
+      headers: { 'Authorization': 'Bearer api_rC6Mj9ZglhTVcSuR7qcEUdMCk05On7EO' }
     });
     const data = await res.json();
     ads = data.map(entry => entry.data.ad).filter(Boolean);
@@ -38,4 +36,5 @@ adText.addEventListener('animationend', () => {
 window.addEventListener('DOMContentLoaded', () => {
   fetchAds();
 });
+
 

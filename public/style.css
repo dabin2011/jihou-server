@@ -61,40 +61,35 @@ body {
   100% { transform: translateX(-100%); }
 }
 
-/* 投稿フォーム */
+/* 投稿フォーム（左上に小さく） */
 #ad-form-container {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  top: 5px;
+  left: 5px;
   background-color: black;
-  padding: 5px 10px;
-  display: flex;
-  justify-content: center;
+  padding: 4px;
   z-index: 6;
 }
 
 #ad-form {
   display: flex;
-  gap: 10px;
-  width: 100%;
-  max-width: 600px;
+  gap: 4px;
 }
 
 #ad-input {
-  flex: 1;
-  padding: 8px;
+  width: 120px;
+  padding: 4px;
+  font-size: 12px;
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 3px;
 }
 
 #ad-form button {
-  padding: 8px 16px;
+  padding: 4px 8px;
+  font-size: 12px;
   background-color: white;
   color: black;
   border: none;
-  border-radius: 4px;
-  font-weight: bold;
+  border-radius: 3px;
   cursor: pointer;
 }

@@ -1,88 +1,156 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>シゲシゲ広告投稿</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background-color: black;
-      color: white;
-    }
+// 時報関連
+const enableBtn = document.getElementById('enable-audio');
+const disableBtn = document.getElementById('disable-audio');
 
-    #ad-form-container {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: black;
-      padding: 6px;
-      z-index: 10;
-    }
+const videos = {
+  "0:0": document.getElementById('jihou-video-0'),
+  "14:0": document.getElementById('jihou-video-14')
+};
 
-    #ad-form {
-      display: flex;
-      gap: 6px;
-    }
+const audios = {
+  "0:0": document.getElementById('jihou-audio-0'),
+  "14:0": document.getElementById('jihou-audio-14')
+};
 
-    #ad-input {
-      width: 160px;
-      padding: 6px;
-      font-size: 14px;
-      border: none;
-      border-radius: 4px;
-    }
+// 広告関連
+const adBar = document.getElementById('ad-bar');
+const adText = document.getElementById('ad-text');
+const adForm = document.getElementById('ad-form');
+const adInput = document.getElementById('ad-input');
+const status = document.getElementById('status');
 
-    #ad-form button {
-      padding: 6px 12px;
-      font-size: 14px;
-      background-color: white;
-      color: black;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+let ads = [];
+let adIndex = 0;
+let alreadyPlayed = false;
 
-    #status {
-      margin-top: 8px;
-      font-size: 12px;
-      color: lightgreen;
-    }
-  </style>
-</head>
-<body>
-  <div id="ad-form-container">
-    <form id="ad-form">
-      <input type="text" id="ad-input" placeholder="シゲシゲ広告" required />
-      <button type="submit">投稿</button>
-    </form>
-    <div id="status"></div>
-  </div>
+// Google Apps Script の WebアプリURL
+const SHEET_API_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
-  <script>
-    const form = document.getElementById("ad-form");
-    const input = document.getElementById("ad-input");
-    const status = document.getElementById("status");
+// ✅ 音声切り替え
+enableBtn.addEventListener('click', () => {
+  localStorage.setItem('jihou-status', 'enabled');
+  enableBtn.style.display = 'none';
+  disableBtn.style.display = 'inline-block';
+});
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-      const ad = input.value.trim();
-      if (!ad) return;
+disableBtn.addEventListener('click', () => {
+  localStorage.setItem('jihou-status', 'disabled');
+  disableBtn.style.display = 'none';
+  enableBtn.style.display = 'inline-block';
+});
 
-      fetch("https://script.google.com/macros/s/AKfycbyo3Y4Gk-MEVgR2iSOZc2nEl0Nt5FXbCp4GeMRil3LzxznxEqWFEkymuQH9zwQA-iN8/exec", {
-        method: "POST",
-        body: JSON.stringify({ ad })
-      })
-      .then(res => res.text())
-      .then(text => {
-        status.textContent = "投稿が完了しました！";
-        input.value = "";
-      })
-      .catch(err => {
-        status.textContent = "投稿に失敗しました…";
-        console.error(err);
-      });
+window.addEventListener('DOMContentLoaded', () => {
+  const savedState = localStorage.getItem('jihou-status');
+  if (savedState === 'enabled') {
+    enableBtn.style.display = 'none';
+    disableBtn.style.display = 'inline-block';
+  } else {
+    enableBtn.style.display = 'inline-block';
+    disableBtn.style.display = 'none';
+  }
+
+  fetchAds(); // 広告取得
+});
+
+// ✅ 広告取得（Google Sheetsから）
+function fetchAds() {
+  fetch(SHEET_API_URL)
+    .then(res => res.json())
+    .then(data => {
+      ads = data.filter(Boolean);
+      adIndex = 0;
+      showNextAd();
+    })
+    .catch(err => {
+      console.error("広告取得失敗:", err);
+      adText.textContent = "広告を取得できませんでした";
     });
-  </script>
-</body>
-</html>
+}
+
+// ✅ 広告表示（スクロール）
+function showNextAd() {
+  if (ads.length === 0) return;
+  adText.textContent = ads[adIndex];
+  adText.style.animation = 'none';
+  void adText.offsetWidth;
+  adText.style.animation = 'scrollText 20s linear';
+  adBar.style.display = 'flex';
+  adIndex = (adIndex + 1) % ads.length;
+}
+
+adText.addEventListener('animationend', () => {
+  if (!alreadyPlayed) showNextAd();
+});
+
+// ✅ 投稿処理（Google Sheetsに保存）
+adForm.addEventListener("submit", function(e) {
+  e.preventDefault();
+  const ad = adInput.value.trim();
+  if (!ad) return;
+
+  fetch(SHEET_API_URL, {
+    method: "POST",
+    body: JSON.stringify({ ad })
+  })
+  .then(res => res.text())
+  .then(() => {
+    status.textContent = "投稿が完了しました！";
+    adInput.value = "";
+    fetchAds(); // 再取得して反映
+  })
+  .catch(err => {
+    status.textContent = "投稿に失敗しました…";
+    console.error(err);
+  });
+});
+
+// ✅ 時報チェック
+setInterval(() => {
+  const now = new Date();
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const key = `${h}:${m}`;
+
+  const isEnabled = localStorage.getItem('jihou-status') === 'enabled';
+  const isJihouTime = isEnabled && key in videos;
+
+  if (isJihouTime && !alreadyPlayed) {
+    alreadyPlayed = true;
+    hideAd();
+    triggerJihou(videos[key], audios[key]);
+  }
+
+  if (!isJihouTime) {
+    alreadyPlayed = false;
+    if (adText.textContent === '') showNextAd();
+  }
+}, 1000);
+
+// ✅ 広告非表示
+function hideAd() {
+  adBar.style.display = 'none';
+  adText.textContent = '';
+}
+
+// ✅ 時報再生
+function triggerJihou(video, audio) {
+  enableBtn.style.display = 'none';
+  disableBtn.style.display = 'none';
+
+  video.currentTime = 0;
+  audio.currentTime = 0;
+  video.style.display = 'block';
+
+  video.play().catch(err => console.error('映像再生失敗:', err));
+  audio.play().catch(err => console.error('音声再生失敗:', err));
+
+  video.onended = () => {
+    video.style.display = 'none';
+    const savedState = localStorage.getItem('jihou-status');
+    if (savedState === 'enabled') {
+      disableBtn.style.display = 'inline-block';
+    } else {
+      enableBtn.style.display = 'inline-block';
+    }
+  };
+}

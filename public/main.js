@@ -23,19 +23,32 @@ let ads = [
   "🎬 映画『時報の彼方』、全国ロードショー！"
 ];
 
+let adIndex = 0;
 let alreadyPlayed = false;
 
-// 音声切り替え
-enableBtn.addEventListener('click', () => {
-  localStorage.setItem('jihou-status', 'enabled');
-  enableBtn.style.display = 'none';
-  disableBtn.style.display = 'inline-block';
+function showNextAd() {
+  if (ads.length === 0) return;
+  adText.textContent = ads[adIndex];
+  adText.style.animation = 'none';
+  void adText.offsetWidth;
+  adText.style.animation = 'scrollText 20s linear';
+  adBar.style.display = 'flex';
+  adIndex = (adIndex + 1) % ads.length;
+}
+
+adText.addEventListener('animationend', () => {
+  if (!alreadyPlayed) showNextAd();
 });
 
-disableBtn.addEventListener('click', () => {
-  localStorage.setItem('jihou-status', 'disabled');
-  disableBtn.style.display = 'none';
-  enableBtn.style.display = 'inline-block';
+adForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const newAd = adInput.value.trim();
+  if (newAd) {
+    ads.push(newAd);
+    adInput.value = '';
+    adIndex = ads.length - 1;
+    showNextAd();
+  }
 });
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -49,18 +62,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// 投稿処理（ローカル保存＋即表示）
-adForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const newAd = adInput.value.trim();
-  if (newAd) {
-    ads.push(newAd);
-    adInput.value = '';
-    showRandomAd(); // ← 投稿後すぐに表示
-  }
-});
-
-// 時報チェック
 setInterval(() => {
   const now = new Date();
   const h = now.getHours();
@@ -78,22 +79,15 @@ setInterval(() => {
 
   if (!isJihouTime) {
     alreadyPlayed = false;
-    showRandomAd();
+    if (adText.textContent === '') showNextAd();
   }
 }, 1000);
 
-// 広告表示
-function showRandomAd() {
-  const randomAd = ads[Math.floor(Math.random() * ads.length)];
-  adText.textContent = randomAd;
-  adBar.style.display = 'flex';
-}
-
 function hideAd() {
   adBar.style.display = 'none';
+  adText.textContent = '';
 }
 
-// 時報再生
 function triggerJihou(video, audio) {
   enableBtn.style.display = 'none';
   disableBtn.style.display = 'none';

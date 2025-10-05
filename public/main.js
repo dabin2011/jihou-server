@@ -1,40 +1,88 @@
-const adBar = document.getElementById('ad-bar');
-const adText = document.getElementById('ad-text');
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>シゲシゲ広告投稿</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: black;
+      color: white;
+    }
 
-let ads = [];
-let adIndex = 0;
+    #ad-form-container {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: black;
+      padding: 6px;
+      z-index: 10;
+    }
 
-async function fetchAds() {
-  try {
-    const res = await fetch('https://api.pageclip.co/form/shigeshige-kokok/submissions', {
-      headers: { 'Authorization': 'Bearer api_rC6Mj9ZglhTVcSuR7qcEUdMCk05On7EO' }
+    #ad-form {
+      display: flex;
+      gap: 6px;
+    }
+
+    #ad-input {
+      width: 160px;
+      padding: 6px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+    }
+
+    #ad-form button {
+      padding: 6px 12px;
+      font-size: 14px;
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #status {
+      margin-top: 8px;
+      font-size: 12px;
+      color: lightgreen;
+    }
+  </style>
+</head>
+<body>
+  <div id="ad-form-container">
+    <form id="ad-form">
+      <input type="text" id="ad-input" placeholder="シゲシゲ広告" required />
+      <button type="submit">投稿</button>
+    </form>
+    <div id="status"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("ad-form");
+    const input = document.getElementById("ad-input");
+    const status = document.getElementById("status");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const ad = input.value.trim();
+      if (!ad) return;
+
+      fetch("https://script.google.com/macros/s/AKfycbyo3Y4Gk-MEVgR2iSOZc2nEl0Nt5FXbCp4GeMRil3LzxznxEqWFEkymuQH9zwQA-iN8/exec", {
+        method: "POST",
+        body: JSON.stringify({ ad })
+      })
+      .then(res => res.text())
+      .then(text => {
+        status.textContent = "投稿が完了しました！";
+        input.value = "";
+      })
+      .catch(err => {
+        status.textContent = "投稿に失敗しました…";
+        console.error(err);
+      });
     });
-    const data = await res.json();
-    ads = data.map(entry => entry.data.ad).filter(Boolean);
-    adIndex = 0;
-    showNextAd();
-  } catch (err) {
-    console.error('広告取得失敗:', err);
-    adText.textContent = '広告を取得できませんでした';
-  }
-}
-
-function showNextAd() {
-  if (ads.length === 0) return;
-  adText.textContent = ads[adIndex];
-  adText.style.animation = 'none';
-  void adText.offsetWidth;
-  adText.style.animation = 'scrollText 20s linear';
-  adBar.style.display = 'flex';
-  adIndex = (adIndex + 1) % ads.length;
-}
-
-adText.addEventListener('animationend', () => {
-  showNextAd();
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  fetchAds();
-});
-
-
+  </script>
+</body>
+</html>

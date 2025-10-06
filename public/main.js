@@ -23,7 +23,7 @@ let ads = [];
 let adIndex = 0;
 let alreadyPlayed = false;
 
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyulgylNfkXZkBDpnHVtmDsDU4Fy_IgrN1D7CnkNO5I1o0bTkyavxuwjKGB3Wgz-7g/exec";
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwH3tQUdLyeyrdDNGLXLtmDDIZqUXK-axeSFKLgQPrFLKWEczxz3xLuXcYZ5wNatg9d/exec";
 
 // 音声切り替え
 enableBtn.addEventListener('click', () => {
@@ -156,6 +156,7 @@ function triggerJihou(video, audio) {
 }
 </body>
 </html>
+
 
 
 

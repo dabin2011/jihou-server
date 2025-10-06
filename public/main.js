@@ -1,157 +1,47 @@
-// 時報関連
-const enableBtn = document.getElementById('enable-audio');
-const disableBtn = document.getElementById('disable-audio');
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>シゲシゲ時報</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="jihou-banner">
+    <!-- 時報映像 -->
+    <video id="jihou-video-0" src="videos/jihou-0am.mp4" style="display:none;"></video>
+    <video id="jihou-video-12" src="videos/jihou-12pm.mp4" style="display:none;"></video>
+    <video id="jihou-video-14" src="videos/jihou-2pm.mp4" style="display:none;"></video>
 
-const videos = {
-  "0:0": document.getElementById('jihou-video-0'),
-  "14:0": document.getElementById('jihou-video-14')
-};
+    <!-- 時報音声 -->
+    <audio id="jihou-audio-0" src="sounds/jihou-0am.mp3"></audio>
+    <audio id="jihou-audio-12" src="sounds/jihou-12pm.mp3"></audio>
+    <audio id="jihou-audio-14" src="sounds/jihou-2pm.mp3"></audio>
 
-const audios = {
-  "0:0": document.getElementById('jihou-audio-0'),
-  "14:0": document.getElementById('jihou-audio-14')
-};
+    <!-- 音声ON/OFFボタン -->
+    <div id="jihou-controls">
+      <button id="enable-audio" class="icon-button">
+        <img src="icons/sound-on.png" alt="時報を有効にする" />
+      </button>
+      <button id="disable-audio" class="icon-button" style="display:none;">
+        <img src="icons/sound-off.png" alt="時報を無効にする" />
+      </button>
+    </div>
 
-// 広告関連
-const adBar = document.getElementById('ad-bar');
-const adText = document.getElementById('ad-text');
-const adForm = document.getElementById('ad-form');
-const adInput = document.getElementById('ad-input');
-const status = document.getElementById('status');
+    <!-- 広告バー -->
+    <div id="ad-bar">
+      <span id="ad-text">広告を読み込み中...</span>
+    </div>
 
-let ads = [];
-let adIndex = 0;
-let alreadyPlayed = false;
+    <!-- 投稿フォーム -->
+    <div id="ad-form-container">
+      <form id="ad-form">
+        <input type="text" id="ad-input" placeholder="シゲシゲ広告" required />
+        <button type="submit">投稿</button>
+      </form>
+      <div id="status"></div>
+    </div>
+  </div>
 
-// Google Apps Script の WebアプリURL
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyehuEEF5kZlKIVwmHlIX2s2pJw5B5YVFDcWW3kDzgLiv5t6lR7sfYMDszv2Va8KIZT/exec";
-
-// ✅ 音声切り替え
-enableBtn.addEventListener('click', () => {
-  localStorage.setItem('jihou-status', 'enabled');
-  enableBtn.style.display = 'none';
-  disableBtn.style.display = 'inline-block';
-});
-
-disableBtn.addEventListener('click', () => {
-  localStorage.setItem('jihou-status', 'disabled');
-  disableBtn.style.display = 'none';
-  enableBtn.style.display = 'inline-block';
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  const savedState = localStorage.getItem('jihou-status');
-  if (savedState === 'enabled') {
-    enableBtn.style.display = 'none';
-    disableBtn.style.display = 'inline-block';
-  } else {
-    enableBtn.style.display = 'inline-block';
-    disableBtn.style.display = 'none';
-  }
-
-  fetchAds(); // 広告取得
-});
-
-// ✅ 広告取得（Google Sheetsから）
-function fetchAds() {
-  fetch(SHEET_API_URL)
-    .then(res => res.json())
-    .then(data => {
-      ads = data.filter(Boolean);
-      adIndex = 0;
-      showNextAd();
-    })
-    .catch(err => {
-      console.error("広告取得失敗:", err);
-      adText.textContent = "広告を取得できませんでした";
-    });
-}
-
-// ✅ 広告表示（スクロール）
-function showNextAd() {
-  if (ads.length === 0) return;
-  adText.textContent = ads[adIndex];
-  adText.style.animation = 'none';
-  void adText.offsetWidth;
-  adText.style.animation = 'scrollText 20s linear';
-  adBar.style.display = 'flex';
-  adIndex = (adIndex + 1) % ads.length;
-}
-
-adText.addEventListener('animationend', () => {
-  if (!alreadyPlayed) showNextAd();
-});
-
-// ✅ 投稿処理（Google Sheetsに保存）
-adForm.addEventListener("submit", function(e) {
-  e.preventDefault();
-  const ad = adInput.value.trim();
-  if (!ad) return;
-
-  fetch(SHEET_API_URL, {
-    method: "POST",
-    body: JSON.stringify({ ad })
-  })
-  .then(res => res.text())
-  .then(() => {
-    status.textContent = "投稿が完了しました！";
-    adInput.value = "";
-    fetchAds(); // 再取得して反映
-  })
-  .catch(err => {
-    status.textContent = "投稿に失敗しました…";
-    console.error(err);
-  });
-});
-
-// ✅ 時報チェック
-setInterval(() => {
-  const now = new Date();
-  const h = now.getHours();
-  const m = now.getMinutes();
-  const key = `${h}:${m}`;
-
-  const isEnabled = localStorage.getItem('jihou-status') === 'enabled';
-  const isJihouTime = isEnabled && key in videos;
-
-  if (isJihouTime && !alreadyPlayed) {
-    alreadyPlayed = true;
-    hideAd();
-    triggerJihou(videos[key], audios[key]);
-  }
-
-  if (!isJihouTime) {
-    alreadyPlayed = false;
-    if (adText.textContent === '') showNextAd();
-  }
-}, 1000);
-
-// ✅ 広告非表示
-function hideAd() {
-  adBar.style.display = 'none';
-  adText.textContent = '';
-}
-
-// ✅ 時報再生
-function triggerJihou(video, audio) {
-  enableBtn.style.display = 'none';
-  disableBtn.style.display = 'none';
-
-  video.currentTime = 0;
-  audio.currentTime = 0;
-  video.style.display = 'block';
-
-  video.play().catch(err => console.error('映像再生失敗:', err));
-  audio.play().catch(err => console.error('音声再生失敗:', err));
-
-  video.onended = () => {
-    video.style.display = 'none';
-    const savedState = localStorage.getItem('jihou-status');
-    if (savedState === 'enabled') {
-      disableBtn.style.display = 'inline-block';
-    } else {
-      enableBtn.style.display = 'inline-block';
-    }
-  };
-}
-
+  <script src="main.js"></script>
+</body>
+</html>

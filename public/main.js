@@ -13,17 +13,7 @@ const audios = {
   "14:0": document.getElementById('jihou-audio-14')
 };
 
-const adBar = document.getElementById('ad-bar');
-const adText = document.getElementById('ad-text');
-const adForm = document.getElementById('ad-form');
-const adInput = document.getElementById('ad-input');
-const status = document.getElementById('status');
-
-let ads = [];
-let adIndex = 0;
 let alreadyPlayed = false;
-
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzPdVXQ50m3gazdJKR_R_nXh8Zj7vci-JAmYN02klU4OdFfwUtWPfiVibk5v2zSXyo/exec";
 
 // 音声切り替え
 enableBtn.addEventListener('click', () => {
@@ -47,61 +37,6 @@ window.addEventListener('DOMContentLoaded', () => {
     enableBtn.style.display = 'inline-block';
     disableBtn.style.display = 'none';
   }
-
-  fetchAds();
-});
-
-// 広告取得
-function fetchAds() {
-  fetch(SHEET_API_URL)
-    .then(res => res.json())
-    .then(data => {
-      ads = data.filter(Boolean);
-      adIndex = 0;
-      showNextAd();
-    })
-    .catch(err => {
-      console.error("広告取得失敗:", err);
-      adText.textContent = "広告を取得できませんでした";
-    });
-}
-
-// 広告表示
-function showNextAd() {
-  if (ads.length === 0) return;
-  adText.textContent = ads[adIndex];
-  adText.style.animation = 'none';
-  void adText.offsetWidth;
-  adText.style.animation = 'scrollText 20s linear';
-  adBar.style.display = 'flex';
-  adIndex = (adIndex + 1) % ads.length;
-}
-
-adText.addEventListener('animationend', () => {
-  if (!alreadyPlayed) showNextAd();
-});
-
-// 投稿処理
-adForm.addEventListener("submit", function(e) {
-  e.preventDefault();
-  const ad = adInput.value.trim();
-  if (!ad) return;
-
-  fetch(SHEET_API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ad })
-  })
-  .then(res => res.text())
-  .then(() => {
-    status.textContent = "投稿が完了しました！";
-    adInput.value = "";
-    fetchAds();
-  })
-  .catch(err => {
-    status.textContent = "投稿に失敗しました…";
-    console.error(err);
-  });
 });
 
 // 時報チェック
@@ -116,21 +51,13 @@ setInterval(() => {
 
   if (isJihouTime && !alreadyPlayed) {
     alreadyPlayed = true;
-    hideAd();
     triggerJihou(videos[key], audios[key]);
   }
 
   if (!isJihouTime) {
     alreadyPlayed = false;
-    if (adText.textContent === '') showNextAd();
   }
 }, 1000);
-
-// 広告非表示
-function hideAd() {
-  adBar.style.display = 'none';
-  adText.textContent = '';
-}
 
 // 時報再生
 function triggerJihou(video, audio) {
@@ -154,13 +81,6 @@ function triggerJihou(video, audio) {
     }
   };
 }
-</body>
-</html>
-
-
-
-
-
 
 
 

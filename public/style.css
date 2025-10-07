@@ -41,4 +41,29 @@ body {
 #jihou-controls {
   position: absolute;
   bottom: -6px;
-  right
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.icon-button {
+  background-color: black;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  display: inline-block;
+}
+
+.icon-button img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+video {
+  pointer-events: auto;
+}

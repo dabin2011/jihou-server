@@ -2,19 +2,19 @@ const enableBtn = document.getElementById('enable-audio');
 const disableBtn = document.getElementById('disable-audio');
 
 const videos = {
-  "23:0": document.getElementById('jihou-video-0'),
+  "23:5": document.getElementById('jihou-video-0'),
   "12:0": document.getElementById('jihou-video-12'),
   "14:0": document.getElementById('jihou-video-14')
 };
 
 const audios = {
-  "23:0": document.getElementById('jihou-audio-0'),
+  "23:5": document.getElementById('jihou-audio-0'),
   "12:0": document.getElementById('jihou-audio-12'),
   "14:0": document.getElementById('jihou-audio-14')
 };
 
 const jihouLinks = {
-  "23:0": "https://dabin051400.wixsite.com/shige/%E3%82%B7%E3%82%B2pro-%E6%96%B0%E8%A6%8F%E4%BC%9A%E5%93%A1%E7%99%BB%E9%8C%B2",
+  "23:5": "https://dabin051400.wixsite.com/shige/%E3%82%B7%E3%82%B2pro-%E6%96%B0%E8%A6%8F%E4%BC%9A%E5%93%A1%E7%99%BB%E9%8C%B2",
   "12:0": "https://shige-shige.com/noon",
   "14:0": "https://shige-shige.com/afternoon"
 };
@@ -100,3 +100,4 @@ function triggerJihou(key, video, audio) {
     }
   };
 }
+

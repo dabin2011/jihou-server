@@ -43,19 +43,19 @@ function stopScrollingMessages() {
 
 const videos = {
   "0:0": document.getElementById("jihou-video-0"),
-  "12:0": document.getElementById("jihou-video-12"),
+  "0:15": document.getElementById("jihou-video-0015"),
   "14:0": document.getElementById("jihou-video-14")
 };
 
 const audios = {
   "0:0": document.getElementById("jihou-audio-0"),
-  "12:0": document.getElementById("jihou-audio-12"),
+  "0:15": document.getElementById("jihou-audio-0015"),
   "14:0": document.getElementById("jihou-audio-14")
 };
 
 const jihouLinks = {
   "0:0": "https://shige-shige.com/midnight",
-  "12:0": "https://shige-shige.com/noon",
+  "0:15": "https://shige-shige.com/noon",
   "14:0": "https://shige-shige.com/afternoon"
 };
 
@@ -141,3 +141,4 @@ function triggerJihou(key, video, audio) {
     }
   };
 }
+

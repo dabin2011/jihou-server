@@ -9,7 +9,22 @@ const messages = [
   { text: "新規会員登録はこちらから。", url: "https://shige-shige.com/signup" },
   { text: "毎日更新中！", url: "https://shige-shige.com/news" },
   { text: "イベント情報もチェックしてね。", url: "https://shige-shige.com/events" },
-  { text: "今日もシゲシゲで元気に！", url: "https://shige-shige.com/motivation" }
+  { text: "今日もシゲシゲで元気に！", url: "https://shige-shige.com/motivation" },
+  { text: "夜の特別時報は0:50に配信！", url: "https://shige-shige.com/night" },
+  { text: "フォローして最新情報をゲット！", url: "https://shige-shige.com/follow" },
+  { text: "スタッフ募集中！", url: "https://shige-shige.com/recruit" },
+  { text: "10月のキャンペーン開催中！", url: "https://shige-shige.com/oct-campaign" },
+  { text: "次回のアップデート情報はこちら。", url: "https://shige-shige.com/update" },
+  { text: "シゲシゲ検定に挑戦！", url: "https://shige-shige.com/quiz" },
+  { text: "あなたの時報を作ろう！", url: "https://shige-shige.com/custom" },
+  { text: "人気ランキングをチェック！", url: "https://shige-shige.com/ranking" },
+  { text: "時報の思い出を投稿しよう。", url: "https://shige-shige.com/memories" },
+  { text: "おすすめコンテンツはこちら。", url: "https://shige-shige.com/recommend" },
+  { text: "シゲシゲの裏話を公開中！", url: "https://shige-shige.com/behind" },
+  { text: "時報の仕組みを解説！", url: "https://shige-shige.com/how" },
+  { text: "シゲシゲのロゴが新しくなりました。", url: "https://shige-shige.com/logo" },
+  { text: "ユーザーの声を紹介中。", url: "https://shige-shige.com/voices" },
+  { text: "シゲシゲの歴史を知ろう。", url: "https://shige-shige.com/history" }
 ];
 
 let messageIndex = 0;
@@ -42,21 +57,21 @@ function stopScrollingMessages() {
 }
 
 const videos = {
-  "0:0": document.getElementById("jihou-video-0"),
-  "0:25": document.getElementById("jihou-video-0025"),
-  "14:0": document.getElementById("jihou-video-14")
+  "0:0": document.getElementById("jihou-video-0000"),
+  "0:50": document.getElementById("jihou-video-0050"),
+  "19:0": document.getElementById("jihou-video-1900")
 };
 
 const audios = {
-  "0:0": document.getElementById("jihou-audio-0"),
-  "0:25": document.getElementById("jihou-audio-0025"),
-  "14:0": document.getElementById("jihou-audio-14")
+  "0:0": document.getElementById("jihou-audio-0000"),
+  "0:50": document.getElementById("jihou-audio-0050"),
+  "19:0": document.getElementById("jihou-audio-1900")
 };
 
 const jihouLinks = {
   "0:0": "https://shige-shige.com/midnight",
-  "0:25": "https://shige-shige.com/noon",
-  "14:0": "https://shige-shige.com/afternoon"
+  "0:50": "https://shige-shige.com/night-special",
+  "19:0": "https://shige-shige.com/evening"
 };
 
 let alreadyPlayed = false;
@@ -133,13 +148,4 @@ function triggerJihou(key, video, audio) {
 
     startScrollingMessages();
 
-    const savedState = localStorage.getItem("jihou-status");
-    if (savedState === "enabled") {
-      disableBtn.style.display = "inline-block";
-    } else {
-      enableBtn.style.display = "inline-block";
-    }
-  };
-}
-
-
+    const savedState

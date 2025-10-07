@@ -35,3 +35,7 @@ body {
   height: 32px;
   border-radius: 50%;
 }
+
+video {
+  pointer-events: auto;
+}

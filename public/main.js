@@ -8,7 +8,7 @@ const videos = {
 };
 
 const audios = {
-  "0:0": document.getElementById('jihou-audio-0'),
+  "22:50": document.getElementById('jihou-audio-0'),
   "12:0": document.getElementById('jihou-audio-12'),
   "14:0": document.getElementById('jihou-audio-14')
 };
@@ -156,6 +156,7 @@ function triggerJihou(video, audio) {
 }
 </body>
 </html>
+
 
 
 

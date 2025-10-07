@@ -11,7 +11,7 @@ const messages = [
   { text: "📢シゲシゲ広告📢　ramen_syunyaにて待望の初！ボカロ投稿（初音ミク）が配信中です。このテキストをクリックして動画をチェック", url: "https://dabin051400.wixsite.com/shige/ramensyunya/%E5%BE%85%E6%9C%9B%E3%81%AE%E5%88%9D%EF%BC%81%E3%83%9C%E3%82%AB%E3%83%AD%E6%8A%95%E7%A8%BF%EF%BC%88%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF%EF%BC%89" }
   { text: "10月8日0時よりシゲシゲ時報、シゲシゲ広告がサービス開始しました。シゲシゲ時報は一日に0時、12時、19時に再生されます。", url: "" },
   { text: "📢シゲシゲ広告📢　ニコニコ動画保管庫にてしげないかが配信中です。このテキストをクリックして動画を見よう！", url: "https://dabin051400.wixsite.com/shige/shigedouga/%E3%80%8C%E3%81%97%E3%81%92%E3%81%AA%E3%81%84%E3%81%8B%E3%80%8D" }
-{ text: "📢シゲシゲ広告📢　シゲシゲ動画公式チャンネルにて新・豪血寺一族 -煩悩解放 - レッツゴー！陰陽師配信中です。クリックして動画にジャンプ", url: "https://dabin051400.wixsite.com/shige/shigeshigedouga/%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1%80%E5%AF%BA%E4%B8%80%E6%97%8F-%E7%85%A9%E6%82%A9%E8%A7%A3%E6%94%BE-%E3%83%AC%E3%83%83%E3%83%84%E3%82%B4%E3%83%BC%EF%BC%81%E9%99%B0%E9%99%BD%E5%B8%AB" }
+　{ text: "📢シゲシゲ広告📢　シゲシゲ動画公式チャンネルにて新・豪血寺一族 -煩悩解放 - レッツゴー！陰陽師配信中です。クリックして動画にジャンプ", url: "https://dabin051400.wixsite.com/shige/shigeshigedouga/%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1%80%E5%AF%BA%E4%B8%80%E6%97%8F-%E7%85%A9%E6%82%A9%E8%A7%A3%E6%94%BE-%E3%83%AC%E3%83%83%E3%83%84%E3%82%B4%E3%83%BC%EF%BC%81%E9%99%B0%E9%99%BD%E5%B8%AB" }
   { text: "シゲシゲ時報のゲスト時報第一号は小野寺あきとしに決定か？詳しい詳細が決まり次第この時報バーにてお知らせします！", url: "" }
   { text: "現在シゲシゲ動画の新バージョン名を絶賛募集中です。", url: "" }
 ];
@@ -154,3 +154,4 @@ function triggerJihou(key, video, audio) {
     }
   };
 }
+

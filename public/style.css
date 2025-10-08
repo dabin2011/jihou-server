@@ -1,3 +1,4 @@
+/* 全体の基本設定 */
 body {
   margin: 0;
   font-family: sans-serif;
@@ -12,6 +13,7 @@ body {
   height: 50px;
   background-color: black;
   overflow: hidden;
+  z-index: 100;
 }
 
 /* スクロールテキストの外枠 */
@@ -56,7 +58,7 @@ body {
 
 /* ボタンのスタイル */
 .icon-button {
-  background-color: black;
+  background-color: transparent;
   border: none;
   padding: 6px;
   cursor: pointer;

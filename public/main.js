@@ -58,19 +58,19 @@ function stopScrollingMessages() {
 
 const videos = {
   "0:0": document.getElementById("jihou-video-0000"),
-  "0:50": document.getElementById("jihou-video-0050"),
+  "20:50": document.getElementById("jihou-video-0050"),
   "19:0": document.getElementById("jihou-video-1900")
 };
 
 const audios = {
   "0:0": document.getElementById("jihou-audio-0000"),
-  "0:50": document.getElementById("jihou-audio-0050"),
+  "20:50": document.getElementById("jihou-audio-0050"),
   "19:0": document.getElementById("jihou-audio-1900")
 };
 
 const jihouLinks = {
   "0:0": "https://shige-shige.com/midnight",
-  "0:50": "https://shige-shige.com/night-special",
+  "20:50": "https://shige-shige.com/night-special",
   "19:0": "https://shige-shige.com/evening"
 };
 
@@ -142,3 +142,4 @@ function triggerJihou(key, video, audio) {
   video.addEventListener("touchstart", openLink);
 
   video.onended = () => {
+

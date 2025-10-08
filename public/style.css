@@ -1,17 +1,19 @@
+/* 全体の背景を白、文字を黒に */
 body {
   margin: 0;
   font-family: sans-serif;
-  background-color: #000;
-  color: #fff;
+  background-color: #fff;
+  color: #000;
 }
 
-/* 時報バー全体 */
+/* 時報バー（黒背景） */
 #jihou-banner {
   position: relative;
   width: 100%;
   height: 50px;
   background-color: black;
   overflow: hidden;
+  z-index: 100;
 }
 
 /* スクロールテキストの外枠 */
@@ -26,7 +28,7 @@ body {
   z-index: 1;
 }
 
-/* スクロールする文字 */
+/* スクロールする文字（白文字） */
 #scroll-text {
   display: inline-block;
   padding-left: 100%;
@@ -38,7 +40,6 @@ body {
   cursor: pointer;
 }
 
-/* スクロールアニメーション */
 @keyframes scrollText {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
@@ -54,7 +55,6 @@ body {
   z-index: 10;
 }
 
-/* ボタンのスタイル */
 .icon-button {
   background-color: transparent;
   border: none;
@@ -66,14 +66,13 @@ body {
   display: inline-block;
 }
 
-/* ボタン内のアイコン画像 */
 .icon-button img {
   width: 24px;
   height: 24px;
   border-radius: 50%;
 }
 
-/* 映像の表示位置 */
+/* 映像の表示位置（中央） */
 video {
   position: fixed;
   top: 50%;

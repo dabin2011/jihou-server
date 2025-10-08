@@ -1,19 +1,17 @@
-/* 全体の基本スタイル */
 body {
   margin: 0;
-  font-family: "Helvetica Neue", sans-serif;
+  font-family: sans-serif;
   background-color: #000;
   color: #fff;
 }
 
-/* 時報バナー領域 */
+/* 時報バー全体 */
 #jihou-banner {
   position: relative;
   width: 100%;
   height: 50px;
   background-color: black;
   overflow: hidden;
-  z-index: 100;
 }
 
 /* スクロールテキストの外枠 */
@@ -28,7 +26,7 @@ body {
   z-index: 1;
 }
 
-/* スクロールするテキスト */
+/* スクロールする文字 */
 #scroll-text {
   display: inline-block;
   padding-left: 100%;
@@ -49,7 +47,7 @@ body {
 /* 音声ON/OFFボタンの配置 */
 #jihou-controls {
   position: absolute;
-  bottom: -6px;
+  top: 8px;
   right: 10px;
   display: flex;
   gap: 10px;
@@ -60,22 +58,22 @@ body {
 .icon-button {
   background-color: black;
   border: none;
-  padding: 10px;
+  padding: 6px;
   cursor: pointer;
   border-radius: 50%;
-  width: 64px;
-  height: 64px;
+  width: 36px;
+  height: 36px;
   display: inline-block;
 }
 
 /* ボタン内のアイコン画像 */
 .icon-button img {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
 }
 
-/* 時報映像の表示設定 */
+/* 映像の表示位置 */
 video {
   position: fixed;
   top: 50%;

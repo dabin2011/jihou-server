@@ -1,8 +1,6 @@
+const scrollText = document.getElementById("scroll-text");
 const enableBtn = document.getElementById("enable-audio");
 const disableBtn = document.getElementById("disable-audio");
-
-const scrollBanner = document.getElementById("scroll-banner");
-const scrollText = document.getElementById("scroll-text");
 
 const messages = [
   { text: "シゲシゲ時報へようこそ。", url: "https://shige-shige.com/welcome" },
@@ -27,119 +25,94 @@ const messages = [
   { text: "シゲシゲの歴史を知ろう。", url: "https://shige-shige.com/history" }
 ];
 
-let messageIndex = 0;
+let index = 0;
 let scrollInterval;
 
 function showNextMessage() {
-  const message = messages[messageIndex];
+  const msg = messages[index];
   scrollText.style.animation = "none";
   void scrollText.offsetWidth;
-  scrollText.textContent = message.text;
-  scrollText.style.animation = "scrollText 20s linear";
-
-  scrollText.onclick = () => window.open(message.url, "_blank");
-  scrollText.addEventListener("touchstart", () => window.open(message.url, "_blank"));
-
-  messageIndex = (messageIndex + 1) % messages.length;
+  scrollText.textContent = msg.text;
+  scrollText.style.animation = "scrollText 20s linear infinite";
+  scrollText.onclick = () => window.open(msg.url, "_blank");
+  index = (index + 1) % messages.length;
 }
 
-function startScrollingMessages() {
-  scrollBanner.style.display = "block";
+function startScroll() {
   showNextMessage();
   scrollInterval = setInterval(showNextMessage, 22000);
 }
 
-function stopScrollingMessages() {
+function stopScroll() {
   clearInterval(scrollInterval);
-  scrollBanner.style.display = "none";
+  scrollText.textContent = "";
   scrollText.onclick = null;
-  scrollText.removeEventListener("touchstart", () => {});
 }
 
-const videos = {
-  "0:0": document.getElementById("jihou-video-0000"),
-  "20:50": document.getElementById("jihou-video-0050"),
-  "19:0": document.getElementById("jihou-video-1900")
-};
-
-const audios = {
-  "0:0": document.getElementById("jihou-audio-0000"),
-  "20:50": document.getElementById("jihou-audio-0050"),
-  "19:0": document.getElementById("jihou-audio-1900")
-};
-
-const jihouLinks = {
-  "0:0": "https://shige-shige.com/midnight",
-  "20:50": "https://shige-shige.com/night-special",
-  "19:0": "https://shige-shige.com/evening"
+const times = {
+  "0:0": { video: "video-0000", audio: "audio-0000" },
+  "0:50": { video: "video-0050", audio: "audio-0050" },
+  "19:0": { video: "video-1900", audio: "audio-1900" }
 };
 
 let alreadyPlayed = false;
 
-enableBtn.addEventListener("click", () => {
+function triggerJihou(key) {
+  const { video, audio } = times[key];
+  const v = document.getElementById(video);
+  const a = document.getElementById(audio);
+
+  stopScroll();
+  v.style.display = "block";
+  v.currentTime = 0;
+  a.currentTime = 0;
+  v.play();
+  a.play();
+
+  v.onended = () => {
+    v.style.display = "none";
+    startScroll();
+  };
+}
+
+enableBtn.onclick = () => {
   localStorage.setItem("jihou-status", "enabled");
   enableBtn.style.display = "none";
   disableBtn.style.display = "inline-block";
-});
+};
 
-disableBtn.addEventListener("click", () => {
+disableBtn.onclick = () => {
   localStorage.setItem("jihou-status", "disabled");
   disableBtn.style.display = "none";
   enableBtn.style.display = "inline-block";
-});
+};
 
-window.addEventListener("DOMContentLoaded", () => {
-  const savedState = localStorage.getItem("jihou-status");
-  if (savedState === "enabled") {
+window.onload = () => {
+  const status = localStorage.getItem("jihou-status");
+  if (status === "enabled") {
     enableBtn.style.display = "none";
     disableBtn.style.display = "inline-block";
   } else {
     enableBtn.style.display = "inline-block";
     disableBtn.style.display = "none";
   }
-
-  startScrollingMessages();
-});
+  startScroll();
+};
 
 setInterval(() => {
   const now = new Date();
-  const h = now.getHours();
-  const m = now.getMinutes();
-  const key = `${h}:${m}`;
+  const key = `${now.getHours()}:${now.getMinutes()}`;
+  const enabled = localStorage.getItem("jihou-status") === "enabled";
 
-  const isEnabled = localStorage.getItem("jihou-status") === "enabled";
-  const isJihouTime = isEnabled && key in videos;
-
-  if (isJihouTime && !alreadyPlayed) {
+  if (enabled && times[key] && !alreadyPlayed) {
     alreadyPlayed = true;
-    triggerJihou(key, videos[key], audios[key]);
+    triggerJihou(key);
   }
 
-  if (!isJihouTime) {
+  if (!times[key]) {
     alreadyPlayed = false;
   }
 }, 1000);
-
-function triggerJihou(key, video, audio) {
-  enableBtn.style.display = "none";
-  disableBtn.style.display = "none";
-
-  stopScrollingMessages();
-
-  video.currentTime = 0;
-  audio.currentTime = 0;
-  video.style.display = "block";
-
-  video.play().catch(err => console.error("映像再生失敗:", err));
-  audio.play().catch(err => console.error("音声再生失敗:", err));
-
-  const link = jihouLinks[key];
-  const openLink = () => {
-    if (link) window.open(link, "_blank");
-  };
-
-  video.onclick = openLink;
-  video.addEventListener("touchstart", openLink);
-
   video.onended = () => {
+
 

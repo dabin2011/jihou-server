@@ -1,12 +1,15 @@
-let enabled = false;
+let enabled = true; // 初期状態はON
 const video = document.getElementById("jingleVideo");
 const overlay = document.getElementById("overlay");
+const soundToggle = document.getElementById("soundToggle");
 
-document.getElementById("startBtn").addEventListener("click", () => {
-  enabled = true;
-  document.getElementById("startBtn").style.display = "none";
+// ON/OFF ボタン
+soundToggle.addEventListener("click", () => {
+  enabled = !enabled;
+  soundToggle.textContent = enabled ? "🔊" : "🔇";
 });
 
+// 毎秒チェック
 setInterval(checkTime, 1000);
 
 function checkTime() {
@@ -17,6 +20,7 @@ function checkTime() {
   const m = now.getMinutes();
   const s = now.getSeconds();
 
+  // 23:59:00 に再生
   if (h === 23 && m === 59 && s === 0) {
     playVideo();
   }
